@@ -676,6 +676,13 @@ a {
   background-color: rgba(0, 0, 0, 0.5);
 }
 
+.modal.open {
+  display: block;
+}
+
+
+
+
 .modal__dialog {
   max-width: 500px;
   margin: 40px auto;

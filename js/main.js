@@ -92,3 +92,119 @@ function setTime(selector, endtime) {
 
 }
 setTime('.timer', deadline)
+
+/////////modal/////////////////////
+const modalTrogger = document.querySelectorAll('.js-button-modul'),
+    modal = document.querySelector('.modal'),
+    modalCloseBTN = document.querySelectorAll('.modal__close');
+
+function openModal() {
+    modal.classList.toggle('open');
+    document.body.style.overflow = 'hidden'
+}
+
+function closeModal() {
+    modal.classList.remove('open');
+    document.body.style.overflow = ''
+}
+
+modalTrogger.forEach(button => {
+    button.addEventListener('click', function (e) {
+        openModal()
+    })
+})
+
+modalCloseBTN.forEach(button => {
+    button.addEventListener('click', function (e) {
+        closeModal()
+    })
+})
+
+modal.addEventListener('click', function (e) {
+    const target = e.target;
+    if (target === modal) {
+        closeModal()
+    }
+})
+document.addEventListener('keydown', (e) => {
+    if (e.code === 'Escape' && modal.classList.contains('open')) {
+        closeModal()
+    }
+})
+
+function showModalByScroll() {
+    if (document.documentElement.clientHeight + window.pageYOffset >= document.documentElement.scrollHeight) {
+        openModal();
+        window.removeEventListener('scroll', showModalByScroll)
+    }
+}
+window.addEventListener('scroll', showModalByScroll)
+
+setTimeout(openModal, 5000);
+
+// let input = document.querySelectorAll('.order__input');
+// const observer = new MutationObserver(MutationRecord => {
+//     console.log(MutationRecord)
+// })
+// observer.observe(input, {
+//     subtree: true
+// })
+
+///////////классы////////////////////
+const menuField = document.querySelector('.menu__field')
+class MenuItem {
+    constructor(src, alt, title, descr, price, parentSelector) {
+        this.src = src;
+        this.alt = alt;
+        this.title = title;
+        this.descr = descr;
+        this.price = price;
+        this.parent = document.querySelector(parentSelector)
+        this.transfer = 70;
+        this.changeToRub()
+    }
+    changeToRub() {
+        this.price = this.price * this.transfer
+    }
+    render() {
+        const element = document.createElement('div');
+
+        element.innerHTML = ` <div class="menu__item">
+        <img src=${this.src} alt=${this.alt}>
+        <h3 class="menu__item-subtitle">${this.title}</h3>
+        <div class="menu__item-descr">${this.descr}</div>
+        <div class="menu__item-divider"></div>
+        <div class="menu__item-price">
+            <div class="menu__item-cost">Цена:</div>
+            <div class="menu__item-total"><span>${this.price}</span> грн/день</div>
+        </div>
+    </div>`
+        this.parent.append(element)
+    }
+}
+new MenuItem(
+    "img/tabs/vegy.jpg",
+    "vegy",
+    'Меню "Фитнес"',
+    'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!',
+    9,
+    ".menu .container"
+).render();
+
+new MenuItem(
+    "img/tabs/post.jpg",
+    "post",
+    'Меню "Постное"',
+    'Меню “Постное” - это тщательный подбор ингредиентов: полное отсутствие продуктов животного происхождения, молоко из миндаля, овса, кокоса или гречки, правильное количество белков за счет тофу и импортных вегетарианских стейков.',
+    14,
+    ".menu .container"
+).render();
+
+new MenuItem(
+    "img/tabs/elite.jpg",
+    "elite",
+    'Меню “Премиум”',
+    'В меню “Премиум” мы используем не только красивый дизайн упаковки, но и качественное исполнение блюд. Красная рыба, морепродукты, фрукты - ресторанное меню без похода в ресторан!',
+    21,
+    ".menu .container"
+).render();
