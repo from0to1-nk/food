@@ -140,7 +140,7 @@ function showModalByScroll() {
 }
 window.addEventListener('scroll', showModalByScroll)
 
-setTimeout(openModal, 5000);
+// setTimeout(openModal, 5000);
 
 // let input = document.querySelectorAll('.order__input');
 // const observer = new MutationObserver(MutationRecord => {
@@ -219,4 +219,48 @@ new MenuItem(
     "menu__item"
 ).render();
 
-///////slider
+///////slider -1 ////////
+
+const slides = document.querySelectorAll('.offer__slide'),
+    next = document.querySelector('.offer__slider-next'),
+    prew = document.querySelector('.offer__slider-prev'),
+    current = document.querySelector('#current'),
+    total = document.querySelector('#total');
+let slideIndex = 1;
+
+
+if (slides.length < 10) {
+    current.textContent = `0${slides.length}`
+} else {
+    current.textContent = slides.length;
+}
+
+function showSlides(n) {
+    if (n > slides.length) {
+        slideIndex = 1;
+    }
+    if (n < 1) {
+        slideIndex = slides.length;
+
+    }
+    slides.forEach(slide => slide.style.display = 'none');
+    slides[slideIndex - 1].style.display = 'block';
+
+    if (slideIndex < 10) {
+        current.textContent = `0${slideIndex}`
+    } else {
+        current.textContent = slideIndex
+    }
+}
+
+function slidesPlus(n) {
+    showSlides(slideIndex += n)
+}
+
+showSlides(slideIndex)
+next.addEventListener('click', function () {
+    slidesPlus(1)
+})
+prew.addEventListener('click', function () {
+    slidesPlus(-1)
+})
