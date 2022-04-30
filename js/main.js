@@ -229,38 +229,73 @@ const slides = document.querySelectorAll('.offer__slide'),
 let slideIndex = 1;
 
 
-if (slides.length < 10) {
-    current.textContent = `0${slides.length}`
-} else {
-    current.textContent = slides.length;
-}
+// if (slides.length < 10) {
+//     current.textContent = `0${slides.length}`
+// } else {
+//     current.textContent = slides.length;
+// }
 
-function showSlides(n) {
-    if (n > slides.length) {
-        slideIndex = 1;
-    }
-    if (n < 1) {
-        slideIndex = slides.length;
+// function showSlides(n) {
+//     if (n > slides.length) {
+//         slideIndex = 1;
+//     }
+//     if (n < 1) {
+//         slideIndex = slides.length;
 
-    }
-    slides.forEach(slide => slide.style.display = 'none');
-    slides[slideIndex - 1].style.display = 'block';
+//     }
+//     slides.forEach(slide => slide.style.display = 'none');
+//     slides[slideIndex - 1].style.display = 'block';
 
-    if (slideIndex < 10) {
-        current.textContent = `0${slideIndex}`
+//     if (slideIndex < 10) {
+//         current.textContent = `0${slideIndex}`
+//     } else {
+//         current.textContent = slideIndex
+//     }
+// }
+
+// function slidesPlus(n) {
+//     showSlides(slideIndex += n)
+// }
+
+// showSlides(slideIndex)
+// next.addEventListener('click', function () {
+//     slidesPlus(1)
+// })
+// prew.addEventListener('click', function () {
+//     slidesPlus(-1)
+// })
+
+///////////////////////slider-carousel////////////////
+const wrapper = document.querySelector('.offer__slider-wrapper'),
+    slideTrack = document.querySelector('.offer__slider-inner'),
+    width = window.getComputedStyle(wrapper).width;
+let widthNumber = +width.slice(0, width.length - 2)
+let offset = 0;
+
+
+
+wrapper.style.overflow = 'hidden';
+slides.forEach(slide => slide.style.width = width);
+slideTrack.style.cssText = 'display:flex';
+slideTrack.style.width = width.slice(0, width.length - 2) * slides.length + 'px';;
+slideTrack.style.transition = 'transform .3s';
+
+next.addEventListener('click', () => {
+    if (offset == widthNumber * (slides.length - 1)) {
+        offset = 0;
     } else {
-        current.textContent = slideIndex
+        offset += widthNumber;
     }
-}
+    console.log(offset)
+    slideTrack.style.transform = `translateX(-${offset}px)`;
 
-function slidesPlus(n) {
-    showSlides(slideIndex += n)
-}
-
-showSlides(slideIndex)
-next.addEventListener('click', function () {
-    slidesPlus(1)
 })
-prew.addEventListener('click', function () {
-    slidesPlus(-1)
+prew.addEventListener('click', () => {
+    if (offset == 0) {
+        offset = widthNumber * (slides.length - 1);
+    } else {
+        offset -= widthNumber;
+    }
+    console.log(offset)
+    slideTrack.style.transform = `translateX(-${offset}px)`
 })
